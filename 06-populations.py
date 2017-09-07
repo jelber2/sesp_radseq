@@ -4,7 +4,7 @@
 # Stacks ustacks
 # By Jean P. Elbers
 # jean.elbers@gmail.com
-# Last modified 1 May 2017
+# Last modified 6 September 2017
 ###############################################################################
 Usage = """
 
@@ -47,11 +47,18 @@ def get_args():
             action=FullPaths,
             help="""popmap file in form SampletabPopulationNumber"""
         )
+    parser.add_argument(
+            "--batch",
+            required=True,
+            type=int,
+            help="""batch number (1 for SESP, 2 for BACS)"""
+        )
     return parser.parse_args()
 
 def main():
     args = get_args()
     popmap = args.popmap
+    batch = args.batch
     InDir = os.getcwd()
     OutDir = InDir
     # Customize your options here
@@ -61,10 +68,10 @@ def main():
     WallTime = "04:00:00"
     LogOut = OutDir
     LogMerge = "oe"
-    JobName = "populations"
+    JobName = """populations-batch_%s""" % (batch)
     Command = """
-    ~/bin/stacks-1.44/populations -P ./ -b 1 -p 1 --max_obs_het 0.5 \
-    -M %s -t 16 -m 6 -r 0.74 --fasta --vcf""" % (popmap)
+    ~/bin/stacks-1.44/populations -P ./ -b %s -p 1 --max_obs_het 0.5 \
+    -M %s -t 16 -m 3 -r 0.74 --fasta --vcf""" % (batch, popmap)
 
     JobString = """
     #!/bin/bash

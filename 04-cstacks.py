@@ -4,7 +4,7 @@
 # Stacks ustacks
 # By Jean P. Elbers
 # jean.elbers@gmail.com
-# Last modified 20 Jan 2017
+# Last modified 6 Sep 2017
 ###############################################################################
 Usage = """
 
@@ -12,7 +12,7 @@ Usage = """
 
 Command:
 1.Runs cstacks on all samples
-    ~/bin/stacks-1.44/cstacks -p 16 -n 4 -b 1 \
+    ~/bin/stacks-1.44/cstacks -p 16 -n 4 -b batch \
     -s Sample1 \
     -s Sample2 \
     -s Sample3 \
@@ -23,7 +23,7 @@ InDir = /work/jelber2/radseq/processed
 
 Usage (execute following code in InDir):
 
-python ~/scripts/sesp_radseq/03-cstacks.py --barcodes barcodes.txt
+python ~/scripts/sesp_radseq/03-cstacks.py --barcodes barcodes.txt --batch 1
 
 """
 ###############################################################################
@@ -51,11 +51,18 @@ def get_args():
             action=FullPaths,
             help="""barcodes file in form Barcode1tabBarcode2tabSample"""
         )
+    parser.add_argument(
+            "--batch",
+            required=True,
+            type=int,
+            help="""batch number (1 for SESP, 2 for BACS)"""
+        )
     return parser.parse_args()
 
 def main():
     args = get_args()
     barcodes = args.barcodes
+    batch = args.batch
     InDir = os.getcwd()
     OutDir = InDir
     InFile = open(barcodes, 'r')
@@ -63,16 +70,13 @@ def main():
     for line in InFile:
         x = line.strip("\n").split("\t")
         rawdatalist.append(x)
-
     InFile.close()
     Samples = []
     for item in rawdatalist:
         Sample = item[2]
         SampleString = "    -s "+Sample+" \\"
         Samples.append(SampleString)
-
     SamplesString = '\n'.join(Samples)
-
     # Customize your options here
     Queue = "workq"
     Allocation = "hpc_sesp"
@@ -80,11 +84,11 @@ def main():
     WallTime = "04:00:00"
     LogOut = OutDir
     LogMerge = "oe"
-    JobName = "cstacks"
+    JobName = """cstacks-batch_%s""" % (batch)
     Command = """
-    ~/bin/stacks-1.44/cstacks -p 16 -n 4 -b 1 \
+    ~/bin/stacks-1.44/cstacks -p 16 -n 4 -b %s \
     %s
-    -o ./ """ % (SamplesString)
+    -o ./ """ % (batch, SamplesString)
 
     JobString = """
     #!/bin/bash

@@ -12,7 +12,7 @@ Usage = """
 
 Command:
 1.Runs pstacks on each sample
-        ~/bin/stacks-1.44/pstacks -p 8 -f Sample.bam -o ./ -i X -m 3
+        ~/bin/stacks-1.44/pstacks -t bam -p 8 -f Sample.bam -o ./ -i X -m 3
          mv pstacks.log pstacks.Sample.log
 Directory info:
 InDir = /work/jelber2/radseq/processed
@@ -65,15 +65,15 @@ def main():
     for item in rawdatalist:
         Sample = item[2]
         # Customize your options here
-        Queue = "workq"
+        Queue = "single"
         Allocation = "hpc_sesp"
-        Processors = "nodes=1:ppn=8"
+        Processors = "nodes=1:ppn=1"
         WallTime = "01:00:00"
         LogOut = OutDir
         LogMerge = "oe"
         JobName = "pstacks-%s" % (Sample)
         Command = """
-        ~/bin/stacks-1.44/pstacks -p 8 -f %s.bam -o ./ -i %d -m 3
+        ~/bin/stacks-1.44/pstacks -t bam -p 1 -f %s.bam -o ./ -i %d -m 3
          mv pstacks.log pstacks.%s.log""" % (Sample, X, Sample)
 
         JobString = """

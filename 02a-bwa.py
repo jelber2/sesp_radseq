@@ -4,7 +4,7 @@
 # BWA
 # By Jean P. Elbers
 # jean.elbers@gmail.com
-# Last modified 1 August 2017
+# Last modified 6 September 2017
 ###############################################################################
 Usage = """
 
@@ -16,9 +16,9 @@ Command:
         /work/jelber2/radseq/44394_ref_Zonotrichia_albicollis-1.0.1_chrUn \
         Sample.1.1.fq.gz \
         Sample.2.2.fq.gz \
-        > Sample.sam
-        ~/bin/samtools-1.3.1/samtools view -h -b Sample.sam > Sample.bam
-        rm Sample.sam
+        > pstacks/Sample.sam
+        ~/bin/samtools-1.3.1/samtools view -h -b pstacks/Sample.sam > pstacks/Sample.bam
+        rm pstacks/Sample.sam
 Directory info:
 InDir = /work/jelber2/radseq/processed
 
@@ -83,9 +83,9 @@ def main():
         /work/jelber2/radseq/44394_ref_Zonotrichia_albicollis-1.0.1_chrUn \
         %s.1.1.fq.gz \
         %s.2.2.fq.gz \
-        > ../%s/%s.sam
-        ~/bin/samtools-1.3.1/samtools view -h -b ../%s/%s.sam > ../%s/%s.bam
-        rm ../%s/%s.sam""" % \
+        > %s/%s.sam
+        ~/bin/samtools-1.3.1/samtools view -h -b %s/%s.sam > %s/%s.bam
+        rm %s/%s.sam""" % \
        (Sample, Sample, OutDir, Sample,
         OutDir, Sample, OutDir, Sample,
         OutDir, Sample)

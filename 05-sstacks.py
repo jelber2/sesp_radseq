@@ -46,11 +46,18 @@ def get_args():
             action=FullPaths,
             help="""barcodes file in form Barcode1tabBarcode2tabSample"""
         )
+    parser.add_argument(
+            "--batch",
+            required=True,
+            type=int,
+            help="""batch number (1 for SESP, 2 for BACS)"""
+        )
     return parser.parse_args()
 
 def main():
     args = get_args()
     barcodes = args.barcodes
+    batch = args.batch
     InDir = os.getcwd()
     OutDir = InDir
     InFile = open(barcodes, 'r')
@@ -72,11 +79,11 @@ def main():
     WallTime = "04:00:00"
     LogOut = OutDir
     LogMerge = "oe"
-    JobName = "sstacks"
+    JobName = """sstacks-batch_%s""" % (batch)
     Command = """
-    ~/bin/stacks-1.44/sstacks -b 1 -c batch_1 -p 16\
+    ~/bin/stacks-1.44/sstacks -b 1 -c batch_%s -p 16\
     %s
-    -o ./ """ % (SamplesString)
+    -o ./ """ % (batch, SamplesString)
 
     JobString = """
     #!/bin/bash
