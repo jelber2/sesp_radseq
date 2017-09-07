@@ -319,7 +319,7 @@
     #Max. len:	140
     #Median len:	140.0
     #Contigs > 1kb:	0
-####### BLAST stacks.consensus.batch4.fa to white-throated sparrow genome
+###### BLAST stacks.consensus.batch4.fa to white-throated sparrow genome
     ~/bin/ncbi-blast-2.6.0+/bin/blastn -query stacks.consensus.batch4.fa \
     -db 44394_ref_Zonotrichia_albicollis-1.0.1_chrUn.fa -outfmt 6 -out test -max_hsps 1 -max_target_seqs 1
     # 279 good hits!
